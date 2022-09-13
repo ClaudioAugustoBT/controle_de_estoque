@@ -59,10 +59,10 @@ class Produto
 
     public function retiradaProduto($id, $oldVL, $qtd)
     {
-        $query = 'INSERT INTO tb_saida (cd_saida, dt_saida, cd_produto, old_qt_produto, qt_saida_produto) VALUES (null,"'. date("Y-m-d H:i:s") .'",' . $id . ',' . $oldVL . ',' . $qtd . ')';
+        $query = 'INSERT INTO tb_saida (cd_saida, dt_saida, cd_produto, old_qt_produto, qt_saida_produto) VALUES (null,"' . date("Y-m-d H:i:s") . '",' . $id . ',' . $oldVL . ',' . $qtd . ')';
         $this->conn->query($query);
 
-        $newVL = floatval($oldVL) - floatval($qtd);
+        $newVL = $oldVL - $qtd;
 
         $up_query = 'UPDATE tb_produto SET qt_produto= ' . $newVL . ' WHERE cd_produto = ' . $id;
         $this->conn->query($up_query);
@@ -72,10 +72,10 @@ class Produto
 
     public function acrescimoProduto($id, $oldVL, $qtd)
     {
-        $query = 'INSERT INTO tb_entrada (cd_entrada, dt_entrada, cd_produto, old_qt_produto, qt_entrada_produto) VALUES (null,"'. date("Y-m-d H:i:s") .'",' . $id . ',' . $oldVL . ',' . $qtd . ')';
+        $query = 'INSERT INTO tb_entrada (cd_entrada, dt_entrada, cd_produto, old_qt_produto, qt_entrada_produto) VALUES (null,"' . date("Y-m-d H:i:s") . '",' . $id . ',' . $oldVL . ',' . $qtd . ')';
         $this->conn->query($query);
 
-        $newVL = floatval($oldVL) + floatval($qtd);
+        $newVL = $oldVL + $qtd;
 
         $up_query = 'UPDATE tb_produto SET qt_produto= ' . $newVL . ' WHERE cd_produto = ' . $id;
         $this->conn->query($up_query);

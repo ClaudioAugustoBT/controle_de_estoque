@@ -2,7 +2,7 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
-
+DROP  SCHEMA IF EXISTS `db_estoque`;
 CREATE SCHEMA IF NOT EXISTS `db_estoque` DEFAULT CHARACTER SET utf8 ;
 USE `db_estoque` ;
 
@@ -52,3 +52,40 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- VIEW de historico
+CREATE VIEW historico AS
+    SELECT 
+        geral.dt,
+        geral.cd_produto,
+        geral.nm_produto,
+        geral.tipo,
+        geral.est_ant,
+        geral.qt_r,
+        geral.qt_a,
+        geral.est_novo
+    FROM
+        (SELECT 
+            dt_saida AS dt,
+                `tb_saida`.cd_produto AS cd_produto,
+                `tb_produto`.nm_produto AS nm_produto,
+                'retirada' AS tipo,
+                `tb_saida`.old_qt_produto AS est_ant,
+                0 AS qt_a,
+                `tb_saida`.qt_saida_produto AS qt_r,
+                (`tb_saida`.old_qt_produto - `tb_saida`.qt_saida_produto) AS est_novo
+        FROM
+            tb_saida
+        JOIN tb_produto ON `tb_saida`.cd_produto = `tb_produto`.cd_produto UNION SELECT 
+            dt_entrada AS dt,
+                `tb_entrada`.cd_produto AS cd_produto,
+                `tb_produto`.nm_produto AS nm_produto,
+                'acrescimo' AS tipo,
+                `tb_entrada`.old_qt_produto AS est_ant,
+                `tb_entrada`.qt_entrada_produto AS qt_a,
+                0 AS qt_r,
+                (`tb_entrada`.old_qt_produto + `tb_entrada`.qt_entrada_produto) AS est_novo
+        FROM
+            tb_entrada
+        JOIN tb_produto ON `tb_entrada`.cd_produto = `tb_produto`.cd_produto) AS geral
+    ORDER BY geral.dt;

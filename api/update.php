@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             // $post_produto->mov == 0 -> Retirada // == 1 -> acrescimo
             if ($post_produto->mov == 0) {
                 try {
-                    $result = $produto->retiradaProduto($post_produto->id, $post_produto->vl_atual, $post_produto->qt_mov);
+                    $result = $produto->retiradaProduto($post_produto->id, $post_produto->qt_atual, $post_produto->qt_mov);
 
                     echo $result;
                 } catch (Exception $e) {
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 }
             } else {
                 try {
-                    $result = $produto->acrescimoProduto($post_produto->id, $post_produto->vl_atual, $post_produto->qt_mov);
+                    $result = $produto->acrescimoProduto($post_produto->id, $post_produto->qt_atual, $post_produto->qt_mov);
 
                     echo $result;
                 } catch (Exception $e) {

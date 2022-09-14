@@ -25,13 +25,24 @@ $produto = new Produto($db);
 ** Method:GET 
 ** Sem parametros -> -> retorna json com todas produtos cadastras
 ** $_GET['id'] = 'id' -> retorna produto por 
-** $_GET['reset'] = 1 -> Reset da base de dados
+** $_GET['moves'] = 1 -> Historico de movimentações
 ** ============================================================+
 */
 
 if ($_SERVER['REQUEST_METHOD'] == "GET") {
-    if (isset($_GET['reset'])) {
-        echo $pessoa->resetDB();
+    if (isset($_GET['moves'])) {
+        try {
+            $moves = $produto->moves();
+            $p_arr["moves"] = array();
+
+            foreach ($moves as $move) {
+                array_push($p_arr["moves"], $move);
+            }
+
+            echo json_encode($p_arr);
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
     } else {
         try {
             $id = isset($_GET['id']) ? $_GET['id'] : null;

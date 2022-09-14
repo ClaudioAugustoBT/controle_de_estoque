@@ -59,12 +59,10 @@ class Produto
 
     public function retiradaProduto($id, $oldVL, $qtd)
     {
-        $query = 'INSERT INTO tb_saida (cd_saida, dt_saida, cd_produto, old_qt_produto, qt_saida_produto) VALUES (null,"' . date("Y-m-d H:i:s") . '",' . $id . ',' . $oldVL . ',' . $qtd . ')';
+        $query = 'INSERT INTO tb_saida (cd_saida, dt_saida, cd_produto, old_qt_produto, qt_saida_produto) VALUES (null, NOW(),' . $id . ',' . $oldVL . ',' . $qtd . ')';
         $this->conn->query($query);
 
-        $newVL = $oldVL - $qtd;
-
-        $up_query = 'UPDATE tb_produto SET qt_produto= ' . $newVL . ' WHERE cd_produto = ' . $id;
+        $up_query = 'UPDATE tb_produto SET qt_produto = qt_produto - ' . $qtd . ' WHERE cd_produto = ' . $id;
         $this->conn->query($up_query);
 
         return true;
@@ -72,12 +70,10 @@ class Produto
 
     public function acrescimoProduto($id, $oldVL, $qtd)
     {
-        $query = 'INSERT INTO tb_entrada (cd_entrada, dt_entrada, cd_produto, old_qt_produto, qt_entrada_produto) VALUES (null,"' . date("Y-m-d H:i:s") . '",' . $id . ',' . $oldVL . ',' . $qtd . ')';
+        $query = 'INSERT INTO tb_entrada (cd_entrada, dt_entrada, cd_produto, old_qt_produto, qt_entrada_produto) VALUES (null, NOW(),' . $id . ',' . $oldVL . ',' . $qtd . ')';
         $this->conn->query($query);
 
-        $newVL = $oldVL + $qtd;
-
-        $up_query = 'UPDATE tb_produto SET qt_produto= ' . $newVL . ' WHERE cd_produto = ' . $id;
+        $up_query = 'UPDATE tb_produto SET qt_produto = qt_produto + ' . $qtd . ' WHERE cd_produto = ' . $id;
         $this->conn->query($up_query);
 
         return true;
@@ -85,13 +81,22 @@ class Produto
 
     public function aditarProduto($produto)
     {
-        $query = 'UPDATE tb_produto 
-                    SET cd_ref_produto = ' . $produto->cd_ref . ', nm_produto= ' . $produto->nome . ', ds_produto= ' . $produto->ds .
-            ', vl_produto= ' . $produto->vl_update . ' WHERE cd_produto = ' . $produto->id . ';';
+        
+        $query = 'UPDATE tb_produto SET';
+        $query .= ' cd_ref_produto = "' . $produto->cd_ref . '", ';
+        $query .= 'nm_produto = "' . $produto->nome . '", ';
+        $query .= 'ds_produto = "' . $produto->ds . '", ';
+        $query .= 'vl_produto = ' . $produto->vl_update . ' WHERE cd_produto = ' . $produto->id ;
+        
         $this->conn->query($query);
 
-
         return true;
+    }
+
+    public function moves(){
+        $moves = $this->conn->query("SELECT * FROM historico")->fetch_all(MYSQLI_ASSOC);
+
+        return $moves;
     }
 
     public function resetDB()

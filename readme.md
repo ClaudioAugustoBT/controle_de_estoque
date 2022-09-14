@@ -1,11 +1,9 @@
-# CONTROLE DE CONTAINERS
-
-## Esse é um teste prático, desenvolvido para a empresa ~~confiencial~~.
+# CONTROLE DE ESTOQUE
+## APP + API
 
 Ferramentas, linguagens e frameworks utilizados:
 
 - PHP
-  - CodeIgniter 3
 - HTML
 - CSS3
   - Bootstrap 4 
@@ -13,6 +11,4 @@ Ferramentas, linguagens e frameworks utilizados:
   - JQuery
   - DataTables (https://datatables.net/)
   - SweetAlert2 (https://sweetalert2.github.io/)
-  - Select2 (https://select2.org/)
-  - 
 - MySQL

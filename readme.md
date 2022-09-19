@@ -1,7 +1,19 @@
 # CONTROLE DE ESTOQUE
-## APP + API
+## Teste técnico para vaga de Desenvolvedor PHP Jr. - APP + API 
 
-Ferramentas, linguagens e frameworks utilizados:
+## Proposta: 
+
+Criar um sistema de CRUD (cadastro, edição, listagem e exclusão) de produtos com gerenciamento de estoque;
+
+O cadastro precisa conter um campo para inserir a quantidade inicial do estoque;
+
+Na listagem dos produtos, é preciso ter um botão para visualizar detalhes e editar o produto e estoque;
+
+Mostrar um histórico de movimentações, indicando a data e hora da movimentação, assim como a quantidade que foi movimentada.
+
+
+
+## Ferramentas, linguagens e frameworks utilizados:
 
 - PHP
 - HTML
